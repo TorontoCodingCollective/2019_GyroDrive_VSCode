@@ -48,8 +48,6 @@ public class TDifferentialDrive {
 
 	private TMotorSpeeds arcadeDrive(double speed, double rotation) {
 		
-		SmartDashboard.putString("Arcade Drive", speed + " " + rotation);
-
 		TMotorSpeeds motorSpeeds = new TMotorSpeeds();
 		
 		// Check for a speed or rotation greater than the deadband
