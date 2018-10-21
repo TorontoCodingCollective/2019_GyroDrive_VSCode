@@ -111,7 +111,7 @@ public abstract class TGameController extends Joystick {
 	protected double getFilteredRawAxis(int axisNumber) {
 		
 		// Round to the nearest 100th
-		double axisValue = Math.round(super.getRawAxis(axisNumber) * 100) / 100;
+		double axisValue = Math.round(super.getRawAxis(axisNumber) * 100.0) / 100.0;
 		
 		if (Math.abs(axisValue) <= axisDeadband) {
 			return 0;

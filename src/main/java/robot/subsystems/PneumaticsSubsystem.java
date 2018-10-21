@@ -12,7 +12,7 @@ import robot.commands.pneumatics.DefaultPneumaticsCommand;
 public class PneumaticsSubsystem extends TSubsystem {
 	
 	// uncomment the compressor to enable pneumatics control
-	Compressor compressor = null; // new Compressor();
+	Compressor compressor = new Compressor();
 	
 	@Override
 	public void init() {
@@ -43,9 +43,11 @@ public class PneumaticsSubsystem extends TSubsystem {
 	public void updatePeriodic() {
 
 		if (compressor != null) {
-			SmartDashboard.putBoolean("Compressor", compressor.getClosedLoopControl());
+			SmartDashboard.putBoolean("Compressor", compressor.enabled());
+			SmartDashboard.putBoolean("Compressor Enabled", compressor.getClosedLoopControl());
 		} else {
 			SmartDashboard.putBoolean("Compressor", false);
+			SmartDashboard.putBoolean("Compressor Enabled", false);
 		}
 	}
 

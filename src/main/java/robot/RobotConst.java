@@ -3,6 +3,9 @@ package robot;
 import com.torontocodingcollective.TConst;
 
 public class RobotConst {
+
+	public static final String TEST_ROBOT = "TestRobot";
+	public static final String PROD_ROBOT = "ProdRobot";
 	
 	//*********************************************************
 	// Drive Constants
@@ -41,13 +44,13 @@ public class RobotConst {
 	
 	// The TorontoCodingCollective framework was developed to run on different
 	// robots through the use of multiple mappings and constants.
-	public static int robot = 1310;
+	public static final String robot = TEST_ROBOT;
 	
 	static {
 		
 		switch (robot) {
 
-		case 1310:
+		case TEST_ROBOT:
 		default:
 			MAX_LOW_GEAR_SPEED = 580.0;    // Encoder counts/sec
 			MAX_HIGH_GEAR_SPEED = 2000.0;

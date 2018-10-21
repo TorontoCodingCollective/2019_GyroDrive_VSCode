@@ -118,7 +118,8 @@ public class OI extends TOi {
 		driverRumble.updatePeriodic();
 		
 		// Update all SmartDashboard values
-		SmartDashboard.putBoolean("Speed PIDs Enabled", getSpeedPidEnabled());
-		SmartDashboard.putBoolean("Compressor Enabled", getCompressorEnabled());
+		SmartDashboard.putBoolean("Speed PID Toggle", getSpeedPidEnabled());
+		SmartDashboard.putBoolean("Compressor Toggle", getCompressorEnabled());
+		SmartDashboard.putString("Driver Controller", driverController.toString());
 	}
 }

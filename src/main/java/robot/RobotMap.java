@@ -17,29 +17,34 @@ public class RobotMap {
 
 	//******************************************
 	// Speed Controllers 
-	// PWM and CAN addresses and Power Ports (PDP)
+	// PWM and CAN addresses
 	//******************************************
-	public static final int 	     LEFT_DRIVE_SPEED_CONTROLLER_CAN_ADDRESS;          
+	public static final int 	     LEFT_DRIVE_SPEED_CONTROLLER_ADDRESS;          
 	public static final TCanSpeedControllerType
 	                        	     LEFT_DRIVE_SPEED_CONTROLLER_TYPE;
-	public static final int 	     LEFT_DRIVE_FOLLOWER_SPEED_CONTROLLER_CAN_ADDRESS; 
+	public static final int 	     LEFT_DRIVE_FOLLOWER_SPEED_CONTROLLER_ADDRESS; 
 	public static final TCanSpeedControllerType
                                      LEFT_DRIVE_FOLLOWER_SPEED_CONTROLLER_TYPE;
 	public static final boolean      LEFT_DRIVE_MOTOR_ISINVERTED;
-	public static final int          LEFT_DRIVE_MOTOR_POWER_PORT;      
 
-	public static final int 	     RIGHT_DRIVE_SPEED_CONTROLLER_CAN_ADDRESS;          
+	public static final int 	     RIGHT_DRIVE_SPEED_CONTROLLER_ADDRESS;          
 	public static final TCanSpeedControllerType
 	                        	     RIGHT_DRIVE_SPEED_CONTROLLER_TYPE;
-	public static final int 	     RIGHT_DRIVE_FOLLOWER_SPEED_CONTROLLER_CAN_ADDRESS; 
+	public static final int 	     RIGHT_DRIVE_FOLLOWER_SPEED_CONTROLLER_ADDRESS; 
 	public static final TCanSpeedControllerType
                             	     RIGHT_DRIVE_FOLLOWER_SPEED_CONTROLLER_TYPE;
 	public static final boolean      RIGHT_DRIVE_MOTOR_ISINVERTED;
-	public static final int 	     RIGHT_DRIVE_MOTOR_POWER_PORT;      
 	
 	//******************************************
-	// DIO Ports
+	// Encoders
 	//******************************************
+	public static final boolean      LEFT_DRIVE_ENCODER_ISINVERTED;
+	public static final boolean      RIGHT_DRIVE_ENCODER_ISINVERTED;
+
+	//******************************************
+	// Gyro Ports
+	//******************************************
+	public static final int 	     GYRO_PORT; 
 	
 	//******************************************
 	// Pneumatics Ports
@@ -52,21 +57,23 @@ public class RobotMap {
 		
 		switch (RobotConst.robot) {
 
-		case 1310:
+		case RobotConst.TEST_ROBOT:
 		default:
-			LEFT_DRIVE_SPEED_CONTROLLER_CAN_ADDRESS           = 0;
-			LEFT_DRIVE_SPEED_CONTROLLER_TYPE                  = TCanSpeedControllerType.TALON_SRX;
-			LEFT_DRIVE_FOLLOWER_SPEED_CONTROLLER_CAN_ADDRESS  = 2;
-			LEFT_DRIVE_FOLLOWER_SPEED_CONTROLLER_TYPE         = TCanSpeedControllerType.VICTOR_SPX;
-			LEFT_DRIVE_MOTOR_ISINVERTED                       = TConst.NOT_INVERTED;
-			LEFT_DRIVE_MOTOR_POWER_PORT                       = 1;
+			LEFT_DRIVE_SPEED_CONTROLLER_ADDRESS           = 0;
+			LEFT_DRIVE_SPEED_CONTROLLER_TYPE              = TCanSpeedControllerType.TALON_SRX;
+			LEFT_DRIVE_FOLLOWER_SPEED_CONTROLLER_ADDRESS  = 2;
+			LEFT_DRIVE_FOLLOWER_SPEED_CONTROLLER_TYPE     = TCanSpeedControllerType.VICTOR_SPX;
+			LEFT_DRIVE_MOTOR_ISINVERTED                   = TConst.INVERTED;
+			LEFT_DRIVE_ENCODER_ISINVERTED                 = TConst.INVERTED;
 
-			RIGHT_DRIVE_SPEED_CONTROLLER_CAN_ADDRESS          = 1;
-			RIGHT_DRIVE_SPEED_CONTROLLER_TYPE                 = TCanSpeedControllerType.TALON_SRX;
-			RIGHT_DRIVE_FOLLOWER_SPEED_CONTROLLER_CAN_ADDRESS = 3;
-			RIGHT_DRIVE_FOLLOWER_SPEED_CONTROLLER_TYPE        = TCanSpeedControllerType.VICTOR_SPX;
-			RIGHT_DRIVE_MOTOR_ISINVERTED                      = TConst.INVERTED;
-			RIGHT_DRIVE_MOTOR_POWER_PORT                      = 2;
+			RIGHT_DRIVE_SPEED_CONTROLLER_ADDRESS          = 1;
+			RIGHT_DRIVE_SPEED_CONTROLLER_TYPE             = TCanSpeedControllerType.TALON_SRX;
+			RIGHT_DRIVE_FOLLOWER_SPEED_CONTROLLER_ADDRESS = 7;
+			RIGHT_DRIVE_FOLLOWER_SPEED_CONTROLLER_TYPE    = TCanSpeedControllerType.VICTOR_SPX;
+			RIGHT_DRIVE_MOTOR_ISINVERTED                  = TConst.NOT_INVERTED;
+			RIGHT_DRIVE_ENCODER_ISINVERTED                = TConst.NOT_INVERTED;
+
+			GYRO_PORT                                     = 0;    
 		}
 	}
 }
