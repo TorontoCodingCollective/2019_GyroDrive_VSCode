@@ -3,7 +3,6 @@ package com.torontocodingcollective.subsystem;
 import com.torontocodingcollective.pid.TGyroPID;
 import com.torontocodingcollective.sensors.encoder.TEncoder;
 import com.torontocodingcollective.sensors.gyro.TGyro;
-import com.torontocodingcollective.speedcontroller.TMotorSpeeds;
 import com.torontocodingcollective.speedcontroller.TSpeedController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -171,10 +170,9 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
 	public double getGyroHeadingError() {
 
 		if (!gyroPid.isEnabled()) {
-			System.out.println("gyroPid disabled error = 0");
 			return 0;
 		}
-		return gyroPid.getError();
+		return gyroPid.getError(gyro.getAngle());
 	}
 
 	/**
@@ -250,7 +248,7 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
 	 */
 	private double setDriveOnHeadingMotorSpeeds() {
 
-		double angleError = gyroPid.getError();
+		double angleError = gyroPid.getError(gyro.getAngle());
 
 		double leftSpeed = speedSetpoint;
 		double rightSpeed = speedSetpoint;
@@ -346,7 +344,7 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
 
 	private double setRotateToHeadingMotorSpeeds() {
 
-		double angleError = gyroPid.getError();
+		double angleError = gyroPid.getError(gyro.getAngle());
 
 		double leftSpeed = speedSetpoint;
 

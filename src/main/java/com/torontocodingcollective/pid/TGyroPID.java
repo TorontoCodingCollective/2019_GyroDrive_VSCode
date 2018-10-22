@@ -55,31 +55,7 @@ public class TGyroPID extends PIDController {
 	 */
 	public double calculate(double currentGyroAngle) {
 		
-		// If the PID is not enabled, this routine does nothing.
-		if (!this.isEnabled()) {
-			return 0;
-		}
-
-		// Normalize the gyro angle.
-		// Current gyro angle is -infinity to +infinity
-		double normalizedGyroAngle = currentGyroAngle % 360.0d;
-		
-		if (normalizedGyroAngle < 0) {
-			normalizedGyroAngle = normalizedGyroAngle + 360.0;
-		}
-		
-		// Calculate the error
-		// Normalize the error for the shortest path.  
-		// The normalized error should be -180 and +180.
-		error = super.getSetpoint() - normalizedGyroAngle;
-		
-		if (error > 180) {
-			error = error - 360.0;
-		}
-		
-		if (error < -180) {
-			error = error + 360.0;
-		}
+		error = getError(currentGyroAngle);
 		
 		// Add the proportional output
 		double proportionalOutput = super.getP() * error;
@@ -138,6 +114,43 @@ public class TGyroPID extends PIDController {
 		return output;
 	}
 	
+	/**
+	 * Get the error given the current angle
+	 * <p>
+	 * This routine uses the setpoint for the PID
+	 * and returns an error in the range of -180 to
+	 * + 180 degrees
+	 */
+	public double getError(double currentGyroAngle) {
+
+		// If the PID is not enabled, this routine does nothing.
+		if (!this.isEnabled()) {
+			return 0;
+		}
+
+		// Normalize the gyro angle.
+		// Current gyro angle is -infinity to +infinity
+		double normalizedGyroAngle = currentGyroAngle % 360.0d;
+		
+		if (normalizedGyroAngle < 0) {
+			normalizedGyroAngle = normalizedGyroAngle + 360.0;
+		}
+		
+		// Calculate the error
+		// Normalize the error for the shortest path.  
+		// The normalized error should be -180 and +180.
+		error = super.getSetpoint() - normalizedGyroAngle;
+		
+		if (error > 180) {
+			error = error - 360.0;
+		}
+		
+		if (error < -180) {
+			error = error + 360.0;
+		}
+		return error;
+	}
+
 	@Override
 	public void disable() {
 		super.disable();

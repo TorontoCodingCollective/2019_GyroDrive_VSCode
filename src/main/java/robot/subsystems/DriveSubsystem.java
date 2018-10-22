@@ -2,7 +2,6 @@ package robot.subsystems;
 
 import com.torontocodingcollective.sensors.encoder.TEncoder;
 import com.torontocodingcollective.sensors.gyro.TAnalogGyro;
-import com.torontocodingcollective.sensors.gyro.TNavXGyro;
 import com.torontocodingcollective.speedcontroller.TCanSpeedController;
 import com.torontocodingcollective.subsystem.TGyroDriveSubsystem;
 
