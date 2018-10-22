@@ -146,7 +146,9 @@ public class TGyroPID extends PIDController {
 	
 	@Override
 	public void reset() {
-		error = 0;
+		if (!isEnabled()) {
+			error = 0;
+		}
 		totalError = 0;
 		output = 0;
 	}

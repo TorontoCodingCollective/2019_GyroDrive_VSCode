@@ -141,7 +141,8 @@ public class TDriveOnHeadingCommand extends TSafeCommand {
     @Override
     protected void end() {
     	if (brakeWhenFinished) {
-    		driveSubsystem.setSpeed(0, 0);
+			driveSubsystem.setSpeed(0, 0);
+			driveSubsystem.disableGyroPid();
     	}
     }
 }

@@ -16,7 +16,7 @@ import com.torontocodingcollective.subsystem.TGyroDriveSubsystem;
  */
 public class TRotateToHeadingCommand extends TSafeCommand {
 
-	public static final double DEFAULT_TIMEOUT = 15.0;
+	public static final double DEFAULT_TIMEOUT = 5.0;
 
 	private final double heading;
 	private final double maxRotationOutput;
@@ -136,6 +136,7 @@ public class TRotateToHeadingCommand extends TSafeCommand {
 	protected void end() {
 		// Always brake at the end of a Rotate to Heading command
 		driveSubsystem.setSpeed(0,0);
+		driveSubsystem.disableGyroPid();
 	}
 
 }
