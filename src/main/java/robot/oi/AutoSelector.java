@@ -33,8 +33,4 @@ public class AutoSelector {
 		return robotStartPosition.getSelected();
 	}
 
-	public static void updatePeriodic() {
-
-		SmartDashboard.putString("Selected Robot Position", String.valueOf(getRobotStartPosition()));
-	}
 }

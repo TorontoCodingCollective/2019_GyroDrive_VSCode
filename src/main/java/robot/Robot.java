@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.commands.AutonomousCommand;
-import robot.oi.AutoSelector;
 import robot.oi.OI;
 import robot.subsystems.CameraSubsystem;
 import robot.subsystems.DriveSubsystem;
@@ -73,7 +72,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 
-		AutoSelector.updatePeriodic();
 		oi.updatePeriodic();
 		
 		Scheduler.getInstance().run();

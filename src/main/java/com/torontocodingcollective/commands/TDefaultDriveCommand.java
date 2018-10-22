@@ -2,9 +2,6 @@ package com.torontocodingcollective.commands;
 
 import com.torontocodingcollective.commands.gyroDrive.TRotateToHeadingCommand;
 import com.torontocodingcollective.oi.TOi;
-import com.torontocodingcollective.oi.TStick;
-import com.torontocodingcollective.oi.TStickPosition;
-import com.torontocodingcollective.speedcontroller.TMotorSpeeds;
 import com.torontocodingcollective.subsystem.TDriveSubsystem;
 import com.torontocodingcollective.subsystem.TGyroDriveSubsystem;
 
@@ -25,7 +22,6 @@ public class TDefaultDriveCommand extends Command {
 	private final TOi oi;
 	private final TDriveSubsystem driveSubsystem;
 	private final TGyroDriveSubsystem gyroDriveSubsystem;
-	private final TDifferentialDrive differentialDrive = new TDifferentialDrive();
 	
 	public TDefaultDriveCommand(TOi oi, TDriveSubsystem driveSubsystem) {
 		requires(driveSubsystem);

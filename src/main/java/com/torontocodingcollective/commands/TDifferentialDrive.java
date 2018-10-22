@@ -3,8 +3,6 @@ package com.torontocodingcollective.commands;
 import com.torontocodingcollective.oi.TStickPosition;
 import com.torontocodingcollective.speedcontroller.TMotorSpeeds;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 /**
  * This class provides a calculator for a differential drive system.
  */
@@ -81,6 +79,7 @@ public class TDifferentialDrive {
 			} else {
 				
 				// Driving backwards 
+				// This routine uses an inverted backwards drive
 				// FIXME: should be selectable
 				//        whether to drive in natural 
 				//        or inverted direction.
