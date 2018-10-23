@@ -16,110 +16,103 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * interface to the commands and command groups that allow control of the robot.
  */
 
-
 /**
  * Driver Controller (inherited from TOi)
  * 
- * 	Sticks:
- * 		Right Stick  		= Drive Stick 
- * 		Left Stick  	  	= Drive Stick
- * 		Right Stick Press  	= Toggle PIDs
- * 		Left Stick Press 	= Toggle Compressor
+ * Sticks: Right Stick = Drive Stick Left Stick = Drive Stick Right Stick Press
+ * = Toggle PIDs Left Stick Press = Toggle Compressor
  * 
- * 	Buttons:
- * 		Start Button 		= Reset Encoders and Gyro 
- * 		Back Button 		= Cancel any Command
+ * Buttons: Start Button = Reset Encoders and Gyro Back Button = Cancel any
+ * Command
  * 
- * 	Bumpers/Triggers:
- *		Left Bumper         = Turbo shift
- *  
- *  POV:
- *  	Any Angle			= Rotate to the Pressed Angle
+ * Bumpers/Triggers: Left Bumper = Turbo shift
+ * 
+ * POV: Any Angle = Rotate to the Pressed Angle
  * 
  */
 public class OI extends TOi {
 
-	private TGameController driverController = new TGameController_Logitech(0);
-	private TRumbleManager driverRumble = new TRumbleManager("Driver", driverController);
+    private TGameController driverController = new TGameController_Logitech(0);
+    private TRumbleManager  driverRumble     = new TRumbleManager("Driver", driverController);
 
-	private TToggle compressorToggle = new TToggle(driverController, TStick.LEFT);
-	private TToggle speedPidToggle = new TToggle(driverController, TStick.RIGHT);
+    private TToggle         compressorToggle = new TToggle(driverController, TStick.LEFT);
+    private TToggle         speedPidToggle   = new TToggle(driverController, TStick.RIGHT);
 
-	private DriveSelector driveSelector = new DriveSelector();
-	
-	@Override
-	public boolean getCancelCommand() {
-		return driverController.getButton(TButton.BACK);
-	}
+    private DriveSelector   driveSelector    = new DriveSelector();
 
-	public boolean getCompressorEnabled() {
-		return compressorToggle.get();
-	}
+    @Override
+    public boolean getCancelCommand() {
+        return driverController.getButton(TButton.BACK);
+    }
 
-	@Override
-	public TStickPosition getDriveStickPosition(TStick stick) {
-		return driverController.getStickPosition(stick);
-	}
+    public boolean getCompressorEnabled() {
+        return compressorToggle.get();
+    }
 
-	@Override
-	public boolean getReset() {
-		return driverController.getButton(TButton.START);
-	}
+    @Override
+    public TStickPosition getDriveStickPosition(TStick stick) {
+        return driverController.getStickPosition(stick);
+    }
 
-	@Override
-	public int getRotateToHeading() {
-		return driverController.getPOV();
-	}
+    @Override
+    public boolean getReset() {
+        return driverController.getButton(TButton.START);
+    }
 
-	/**
-	 * Get the selected drive type
-	 * @return {@link DriveControlType} selected on the 
-	 * SmartDashboard.  The default drive type is 
-	 * {@link DriveControlType#ARCADE}
-	 */
-	public DriveControlType getSelectedDriveType() {
-		return driveSelector.getDriveControlType();
-	}
+    @Override
+    public int getRotateToHeading() {
+        return driverController.getPOV();
+    }
 
-	/**
-	 * Get the selected single stick side
-	 * @return {@link TStick} selected on the 
-	 * SmartDashboard.  The default single stick
-	 * drive is {@link TStick#RIGHT}
-	 */
-	public TStick getSelectedSingleStickSide() {
-		return driveSelector.getSingleStickSide();
-	}
+    /**
+     * Get the selected drive type
+     * 
+     * @return {@link DriveControlType} selected on the SmartDashboard. The default
+     *         drive type is {@link DriveControlType#ARCADE}
+     */
+    public DriveControlType getSelectedDriveType() {
+        return driveSelector.getDriveControlType();
+    }
 
-	@Override
-	public boolean getSpeedPidEnabled() {
-		return speedPidToggle.get();
-	}
+    /**
+     * Get the selected single stick side
+     * 
+     * @return {@link TStick} selected on the SmartDashboard. The default single
+     *         stick drive is {@link TStick#RIGHT}
+     */
+    public TStick getSelectedSingleStickSide() {
+        return driveSelector.getSingleStickSide();
+    }
 
-	public boolean getTurboOn() {
-		return driverController.getButton(TButton.LEFT_BUMPER);
-	}
+    @Override
+    public boolean getSpeedPidEnabled() {
+        return speedPidToggle.get();
+    }
 
-	public void init() {
-		compressorToggle.set(true);
-		speedPidToggle.set(false);
-	}
-	
-	public void setSpeedPidEnabled(boolean state) {
-		speedPidToggle.set(state);
-	}
-	
+    public boolean getTurboOn() {
+        return driverController.getButton(TButton.LEFT_BUMPER);
+    }
 
-	public void updatePeriodic() {
+    public void init() {
+        compressorToggle.set(true);
+        speedPidToggle.set(false);
+    }
 
-		// Update all Toggles
-		compressorToggle.updatePeriodic();
-		speedPidToggle.updatePeriodic();
-		driverRumble.updatePeriodic();
-		
-		// Update all SmartDashboard values
-		SmartDashboard.putBoolean("Speed PID Toggle", getSpeedPidEnabled());
-		SmartDashboard.putBoolean("Compressor Toggle", getCompressorEnabled());
-		SmartDashboard.putString("Driver Controller", driverController.toString());
-	}
+    public void setSpeedPidEnabled(boolean state) {
+        speedPidToggle.set(state);
+    }
+
+    @Override
+    public void updatePeriodic() {
+
+        // Update all Toggles
+        compressorToggle.updatePeriodic();
+        speedPidToggle.updatePeriodic();
+        driverRumble.updatePeriodic();
+
+        // Update all SmartDashboard values
+        SmartDashboard.putBoolean("Speed PID Toggle", getSpeedPidEnabled());
+        SmartDashboard.putBoolean("Compressor Toggle", getCompressorEnabled());
+        SmartDashboard.putString("Driver Controller", driverController.toString());
+    }
 }

@@ -9,17 +9,17 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public abstract class TSubsystem extends Subsystem {
 
-	/**
-	 * Initialize the subsystem
-	 */
-	public abstract void init();
-	
-	/**
-	 * Update Periodic 
-	 * <p>
-	 * This routine should be used for updating elements (like PIDs) that
-	 * need to run on every control loop, and to update the SmartDashboard values.
-	 */
-	public abstract void updatePeriodic();
-	
+    /**
+     * Initialize the subsystem
+     */
+    public abstract void init();
+
+    /**
+     * Update Periodic
+     * <p>
+     * This routine should be used for updating elements (like PIDs) that need to
+     * run on every control loop, and to update the SmartDashboard values.
+     */
+    public abstract void updatePeriodic();
+
 }

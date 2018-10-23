@@ -7,33 +7,32 @@ import robot.Robot;
  *
  */
 public class DefaultPneumaticsCommand extends Command {
-	
-	public DefaultPneumaticsCommand() {
-		// Use requires() here to declare subsystem dependencies
-		requires(Robot.pneumaticsSubsystem);
-	}
 
-	// Called just before this Command runs the first time
-	@Override
-	protected void initialize() {
-	}
+    public DefaultPneumaticsCommand() {
+        // Use requires() here to declare subsystem dependencies
+        requires(Robot.pneumaticsSubsystem);
+    }
 
-	// Called repeatedly when this Command is scheduled to run
-	@Override
-	protected void execute() {
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+    }
 
-		if (Robot.oi.getCompressorEnabled()) {
-			Robot.pneumaticsSubsystem.enableCompressor();
-		}
-		else {
-			Robot.pneumaticsSubsystem.disableCompressor();
-		}
-	}
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
 
-	// Make this return true when this Command no longer needs to run execute()
-	@Override
-	protected boolean isFinished() {
-		return false;
-	}
+        if (Robot.oi.getCompressorEnabled()) {
+            Robot.pneumaticsSubsystem.enableCompressor();
+        } else {
+            Robot.pneumaticsSubsystem.disableCompressor();
+        }
+    }
+
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
 
 }

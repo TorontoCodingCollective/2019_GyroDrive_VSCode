@@ -15,72 +15,71 @@ import robot.subsystems.DriveSubsystem;
  */
 public class DefaultDriveCommand extends TDefaultDriveCommand {
 
-	OI oi = Robot.oi;
-	DriveSubsystem driveSubsystem = Robot.driveSubsystem;
-	
-	TDifferentialDrive differentialDrive = new TDifferentialDrive();
-	
-	public DefaultDriveCommand() {
-		// The drive logic will be handled by the TDefaultDriveCommand
-		// which also contains the requires(driveSubsystem) statement
-		super(Robot.oi, Robot.driveSubsystem);
-	}
+    OI                 oi                = Robot.oi;
+    DriveSubsystem     driveSubsystem    = Robot.driveSubsystem;
 
-	// Called just before this Command runs the first time
-	@Override
-	protected void initialize() {
-	}
+    TDifferentialDrive differentialDrive = new TDifferentialDrive();
 
-	// Called repeatedly when this Command is scheduled to run
-	@Override
-	protected void execute() {
+    public DefaultDriveCommand() {
+        // The drive logic will be handled by the TDefaultDriveCommand
+        // which also contains the requires(driveSubsystem) statement
+        super(Robot.oi, Robot.driveSubsystem);
+    }
 
-		// Check the driver controller buttons
-		super.execute();
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+    }
 
-		// Enable turbo mode
-		if (oi.getTurboOn()) {
-			driveSubsystem.enableTurbo();
-		}
-		else {
-			driveSubsystem.disableTurbo();
-		}
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
 
-		// Drive according to the type of drive selected in the 
-		// operator input.
-		TStickPosition leftStickPosition  = oi.getDriveStickPosition(TStick.LEFT);
-		TStickPosition rightStickPosition = oi.getDriveStickPosition(TStick.RIGHT);
-		
-		TStick singleStickSide = oi.getSelectedSingleStickSide();
-		
-		TMotorSpeeds motorSpeeds;
-		
-		switch (oi.getSelectedDriveType()) {
-		
-		case SINGLE_STICK:
-			TStickPosition singleStickPosition = rightStickPosition;
-			if (singleStickSide == TStick.LEFT) {
-				singleStickPosition = leftStickPosition;
-			}
-			motorSpeeds = differentialDrive.arcadeDrive(singleStickPosition);
-			break;
-		
-		case TANK:
-			motorSpeeds = differentialDrive.tankDrive(leftStickPosition, rightStickPosition);
-			break;
-		
-		case ARCADE:
-		default:
-			motorSpeeds = differentialDrive.arcadeDrive(leftStickPosition, rightStickPosition);
-			break;
-		}
+        // Check the driver controller buttons
+        super.execute();
 
-		driveSubsystem.setSpeed(motorSpeeds);
-	}
+        // Enable turbo mode
+        if (oi.getTurboOn()) {
+            driveSubsystem.enableTurbo();
+        } else {
+            driveSubsystem.disableTurbo();
+        }
 
-	@Override
-	protected boolean isFinished() {
-		// The default command does not end
-		return false;
-	}
+        // Drive according to the type of drive selected in the
+        // operator input.
+        TStickPosition leftStickPosition = oi.getDriveStickPosition(TStick.LEFT);
+        TStickPosition rightStickPosition = oi.getDriveStickPosition(TStick.RIGHT);
+
+        TStick singleStickSide = oi.getSelectedSingleStickSide();
+
+        TMotorSpeeds motorSpeeds;
+
+        switch (oi.getSelectedDriveType()) {
+
+        case SINGLE_STICK:
+            TStickPosition singleStickPosition = rightStickPosition;
+            if (singleStickSide == TStick.LEFT) {
+                singleStickPosition = leftStickPosition;
+            }
+            motorSpeeds = differentialDrive.arcadeDrive(singleStickPosition);
+            break;
+
+        case TANK:
+            motorSpeeds = differentialDrive.tankDrive(leftStickPosition, rightStickPosition);
+            break;
+
+        case ARCADE:
+        default:
+            motorSpeeds = differentialDrive.arcadeDrive(leftStickPosition, rightStickPosition);
+            break;
+        }
+
+        driveSubsystem.setSpeed(motorSpeeds);
+    }
+
+    @Override
+    protected boolean isFinished() {
+        // The default command does not end
+        return false;
+    }
 }

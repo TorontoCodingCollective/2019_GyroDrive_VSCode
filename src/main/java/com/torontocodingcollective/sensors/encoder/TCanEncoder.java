@@ -10,32 +10,33 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  */
 public class TCanEncoder extends TEncoder {
 
-	private TalonSRX talonSRX;
-	
-	/**
-	 * Encoder constructor. Construct a Encoder given a TalonSRX device.  The encoder
-	 * must be a quadrature encoder plugged into the TalonSRX.
-	 * <p>
-	 * The encoder is not inverted.
-	 * @param canAddress
-	 *
-	 */
-	public TCanEncoder(TalonSRX talonSRX, boolean isInverted) {
-		super(isInverted);
-		this.talonSRX = talonSRX;
-		talonSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-	}
+    private TalonSRX talonSRX;
 
-	@Override
-	public int get() {
-		// Convert the raw counts
-		return super.get(talonSRX.getSelectedSensorPosition(0));
-	}
+    /**
+     * Encoder constructor. Construct a Encoder given a TalonSRX device. The encoder
+     * must be a quadrature encoder plugged into the TalonSRX.
+     * <p>
+     * The encoder is not inverted.
+     * 
+     * @param canAddress
+     *
+     */
+    public TCanEncoder(TalonSRX talonSRX, boolean isInverted) {
+        super(isInverted);
+        this.talonSRX = talonSRX;
+        talonSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+    }
 
-	@Override
-	public double getRate() {
-		// Convert the raw rate
-		return super.getRate(talonSRX.getSelectedSensorVelocity(0));
-	}
+    @Override
+    public int get() {
+        // Convert the raw counts
+        return super.get(talonSRX.getSelectedSensorPosition(0));
+    }
+
+    @Override
+    public double getRate() {
+        // Convert the raw rate
+        return super.getRate(talonSRX.getSelectedSensorVelocity(0));
+    }
 
 }

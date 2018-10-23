@@ -12,84 +12,85 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  * Default Drive Command for Game Controllers
  * <p>
  * Implements the following basic controls for the driver. 
- * <p> Tank, Arcade or Single Stick drive
- * <br> Back Button to cancel a command
- * <br> Start Button to reset the gyro and encoders
- * <br> POV to rotate to angle
+ * <ls>
+ * <li>Tank, Arcade or Single Stick drive 
+ * <li>Back Button to cancel a command 
+ * <li>Start Button to reset the gyro and encoders 
+ * <li>POV to rotate to angle 
+ * </ls>
  */
 public class TDefaultDriveCommand extends Command {
 
-	private final TOi oi;
-	private final TDriveSubsystem driveSubsystem;
-	private final TGyroDriveSubsystem gyroDriveSubsystem;
-	
-	public TDefaultDriveCommand(TOi oi, TDriveSubsystem driveSubsystem) {
-		requires(driveSubsystem);
-		
-		this.driveSubsystem = driveSubsystem;
-		this.oi = oi;
-		
-		if (driveSubsystem instanceof TGyroDriveSubsystem) {
-			gyroDriveSubsystem = (TGyroDriveSubsystem) driveSubsystem;
-		} else {
-			gyroDriveSubsystem = null;
-		}
-	}
+    private final TOi                 oi;
+    private final TDriveSubsystem     driveSubsystem;
+    private final TGyroDriveSubsystem gyroDriveSubsystem;
 
-	@Override
-	protected void initialize() {
-	}
+    public TDefaultDriveCommand(TOi oi, TDriveSubsystem driveSubsystem) {
+        requires(driveSubsystem);
 
-	@Override
-	protected void execute() {
+        this.driveSubsystem = driveSubsystem;
+        this.oi = oi;
 
-		// Process all standard driver buttons before
-		// driving the robot.
-		
-		// Reset encoders
-		if (oi.getReset()) {
-			
-			driveSubsystem.resetEncoders();
+        if (driveSubsystem instanceof TGyroDriveSubsystem) {
+            gyroDriveSubsystem = (TGyroDriveSubsystem) driveSubsystem;
+        } else {
+            gyroDriveSubsystem = null;
+        }
+    }
 
-			if (gyroDriveSubsystem != null) {
-				gyroDriveSubsystem.resetGyroAngle();
-			}
-		}
+    @Override
+    protected void initialize() {
+    }
 
-		// Enable or disable PID controllers on the 
-		// drive motors
-		if (oi.getSpeedPidEnabled()) {
-			driveSubsystem.enableSpeedPids();
-		}
-		else {
-			driveSubsystem.disableSpeedPids();
-		}
+    @Override
+    protected void execute() {
 
-		// If this is a gyro subsystem, 
-		// then rotate to the heading
-		if (gyroDriveSubsystem != null) {
-			int heading = oi.getRotateToHeading();
-			if (heading != -1) {
-				Scheduler.getInstance().add(new TRotateToHeadingCommand(heading, oi, gyroDriveSubsystem));
-			}
-		}
+        // Process all standard driver buttons before
+        // driving the robot.
 
-	}
+        // Reset encoders
+        if (oi.getReset()) {
 
-	// Make this return true when this Command no longer needs to run execute()
-	@Override
-	protected boolean isFinished() {
-		return false;
-	}
+            driveSubsystem.resetEncoders();
 
-	// Called once after isFinished returns true
-	@Override
-	protected void end() {
-	}
+            if (gyroDriveSubsystem != null) {
+                gyroDriveSubsystem.resetGyroAngle();
+            }
+        }
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-	}
+        // Enable or disable PID controllers on the
+        // drive motors
+        if (oi.getSpeedPidEnabled()) {
+            driveSubsystem.enableSpeedPids();
+        } else {
+            driveSubsystem.disableSpeedPids();
+        }
+
+        // If this is a gyro subsystem,
+        // then rotate to the heading
+        if (gyroDriveSubsystem != null) {
+            int heading = oi.getRotateToHeading();
+            if (heading != -1) {
+                Scheduler.getInstance().add(new TRotateToHeadingCommand(heading, oi, gyroDriveSubsystem));
+            }
+        }
+
+    }
+
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
+
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+    }
+
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+    }
 }
