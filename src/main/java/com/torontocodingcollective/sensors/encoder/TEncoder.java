@@ -6,8 +6,8 @@ package com.torontocodingcollective.sensors.encoder;
  * The encoder interface is not consistent for PWM and CAN encoders, and this
  * interface is used to unify that interface
  * <p>
- * Known implementations: {@link TCanEncoder}, {@link TPwmQuadEncoder},
- * {@link TPwmCounterEncoder}
+ * Known implementations: {@link TCanEncoder}, {@link TDioQuadEncoder},
+ * {@link TDioCounterEncoder}
  */
 public abstract class TEncoder {
 

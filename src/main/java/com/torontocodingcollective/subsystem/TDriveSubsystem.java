@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public abstract class TDriveSubsystem extends TSubsystem {
 
+    public enum TSide { LEFT, RIGHT }
+    
     protected final TSpeedController leftMotor;
     protected final TSpeedController rightMotor;
 
@@ -156,6 +158,34 @@ public abstract class TDriveSubsystem extends TSubsystem {
         return getEncoderDistance() / encoderCountsPerInch;
     }
 
+    /** 
+     * Get the speed controller on the specified side.
+     * <p>
+     * This speed controller was specified on the constructor
+     * @param side {@link TSide#LEFT} or {@link TSide#RIGHT}
+     * @return TSpeedController for the specified side or 
+     * {@code null} if the side is invalid
+     */
+    public TSpeedController getSpeedController(TSide side) {
+
+        if (side == null) {
+            return null;
+        }
+        
+        switch (side) {
+        
+        case LEFT:
+            return leftMotor;
+            
+        case RIGHT:
+            return rightMotor;
+            
+        default:
+            System.out.println("Cannot get speed controller on side " + side.toString());
+            return null;
+        }
+    }
+    
     /**
      * Get the raw distance covered since the last encoder reset
      * <p>

@@ -8,7 +8,7 @@ import com.torontocodingcollective.speedcontroller.TMotorSpeeds;
 
 import robot.Robot;
 import robot.oi.OI;
-import robot.subsystems.DriveSubsystem;
+import robot.subsystems.CanDriveSubsystem;
 
 /**
  * Default drive command for a drive base
@@ -16,7 +16,7 @@ import robot.subsystems.DriveSubsystem;
 public class DefaultDriveCommand extends TDefaultDriveCommand {
 
     OI                 oi                = Robot.oi;
-    DriveSubsystem     driveSubsystem    = Robot.driveSubsystem;
+    CanDriveSubsystem     driveSubsystem    = Robot.driveSubsystem;
 
     TDifferentialDrive differentialDrive = new TDifferentialDrive();
 

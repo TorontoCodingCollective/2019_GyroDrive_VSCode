@@ -64,6 +64,7 @@ public abstract class TSpeedController implements SpeedController {
      *          not support an attached encoder
      */
     public TEncoder getEncoder() {
+        System.out.println("GetEncoder is not supported for " + this.getClass().getName());
         return null;
     }
 

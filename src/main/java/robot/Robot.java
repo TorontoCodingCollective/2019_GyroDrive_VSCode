@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.commands.AutonomousCommand;
 import robot.oi.OI;
 import robot.subsystems.CameraSubsystem;
-import robot.subsystems.DriveSubsystem;
+import robot.subsystems.CanDriveSubsystem;
 import robot.subsystems.PneumaticsSubsystem;
 import robot.subsystems.PowerSubsystem;
 
@@ -27,7 +27,7 @@ public class Robot extends IterativeRobot {
 
     public static final List<TSubsystem>    subsystemLs         = new ArrayList<TSubsystem>();
 
-    public static final DriveSubsystem      driveSubsystem      = new DriveSubsystem();
+    public static final CanDriveSubsystem      driveSubsystem      = new CanDriveSubsystem();
     public static final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
     public static final PowerSubsystem      powerSubsystem      = new PowerSubsystem();
     public static final CameraSubsystem     cameraSubsystem     = new CameraSubsystem();
