@@ -4,7 +4,7 @@ import com.torontocodingcollective.commands.TDefaultDriveCommand;
 import com.torontocodingcollective.commands.TDifferentialDrive;
 import com.torontocodingcollective.oi.TStick;
 import com.torontocodingcollective.oi.TStickPosition;
-import com.torontocodingcollective.speedcontroller.TMotorSpeeds;
+import com.torontocodingcollective.speedcontroller.TSpeeds;
 
 import robot.Robot;
 import robot.oi.OI;
@@ -52,7 +52,7 @@ public class DefaultDriveCommand extends TDefaultDriveCommand {
 
         TStick singleStickSide = oi.getSelectedSingleStickSide();
 
-        TMotorSpeeds motorSpeeds;
+        TSpeeds motorSpeeds;
 
         switch (oi.getSelectedDriveType()) {
 

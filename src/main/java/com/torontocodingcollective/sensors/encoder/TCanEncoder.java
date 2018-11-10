@@ -13,30 +13,30 @@ public class TCanEncoder extends TEncoder {
     private TalonSRX talonSRX;
 
     /**
-     * Encoder constructor. Construct a Encoder given a TalonSRX device. The encoder
-     * must be a quadrature encoder plugged into the TalonSRX.
+     * Encoder constructor. Construct a Encoder given a TalonSRX device. 
+     * The encoder must be a quadrature encoder plugged into the TalonSRX.
      * <p>
-     * The encoder is not inverted.
-     * 
-     * @param canAddress
-     *
+     * The encoder will be reset to zero when constructed
+     * @param talonSRX where the quadrature encoder is attached
+     * @param isInverted {@code true} if inverted, {@code false} otherwise
      */
     public TCanEncoder(TalonSRX talonSRX, boolean isInverted) {
         super(isInverted);
         this.talonSRX = talonSRX;
-        talonSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+        talonSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        talonSRX.setSelectedSensorPosition(0);
     }
 
     @Override
     public int get() {
         // Convert the raw counts
-        return super.get(talonSRX.getSelectedSensorPosition(0));
+        return super.get(talonSRX.getSelectedSensorPosition());
     }
 
     @Override
     public double getRate() {
         // Convert the raw rate
-        return super.getRate(talonSRX.getSelectedSensorVelocity(0));
+        return super.getRate(talonSRX.getSelectedSensorVelocity());
     }
 
 }

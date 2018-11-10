@@ -27,7 +27,7 @@ public class Robot extends IterativeRobot {
 
     public static final List<TSubsystem>    subsystemLs         = new ArrayList<TSubsystem>();
 
-    public static final CanDriveSubsystem      driveSubsystem      = new CanDriveSubsystem();
+    public static final CanDriveSubsystem   driveSubsystem      = new CanDriveSubsystem();
     public static final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
     public static final PowerSubsystem      powerSubsystem      = new PowerSubsystem();
     public static final CameraSubsystem     cameraSubsystem     = new CameraSubsystem();

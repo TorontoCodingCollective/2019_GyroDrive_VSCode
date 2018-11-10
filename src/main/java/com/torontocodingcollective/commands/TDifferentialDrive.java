@@ -1,7 +1,7 @@
 package com.torontocodingcollective.commands;
 
 import com.torontocodingcollective.oi.TStickPosition;
-import com.torontocodingcollective.speedcontroller.TMotorSpeeds;
+import com.torontocodingcollective.speedcontroller.TSpeeds;
 
 /**
  * This class provides a calculator for a differential drive system.
@@ -44,9 +44,9 @@ public class TDifferentialDrive {
         setMotorDeadband(motorSpeedDeadband);
     }
 
-    private TMotorSpeeds arcadeDrive(double speed, double rotation) {
+    private TSpeeds arcadeDrive(double speed, double rotation) {
 
-        TMotorSpeeds motorSpeeds = new TMotorSpeeds();
+        TSpeeds motorSpeeds = new TSpeeds();
 
         // Check for a speed or rotation greater than the deadband
         if (!(Math.abs(speed) > inputDeadband || Math.abs(rotation) > inputDeadband)) {
@@ -147,10 +147,10 @@ public class TDifferentialDrive {
      * @return TMotorSpeeds object containing the calculated left and right motor
      *         speeds.
      */
-    public TMotorSpeeds arcadeDrive(TStickPosition singleStickPosition) {
+    public TSpeeds arcadeDrive(TStickPosition singleStickPosition) {
 
         if (singleStickPosition == null) {
-            return new TMotorSpeeds();
+            return new TSpeeds();
         }
         // By convention the y axis of a joystick is inverted
         return arcadeDrive(-singleStickPosition.y, singleStickPosition.x);
@@ -179,10 +179,10 @@ public class TDifferentialDrive {
      * @return TMotorSpeeds object containing the calculated left and right motor
      *         speeds.
      */
-    public TMotorSpeeds arcadeDrive(TStickPosition leftStickPosition, TStickPosition rightStickPosition) {
+    public TSpeeds arcadeDrive(TStickPosition leftStickPosition, TStickPosition rightStickPosition) {
 
         if (leftStickPosition == null || rightStickPosition == null) {
-            return new TMotorSpeeds();
+            return new TSpeeds();
         }
 
         // By convention the y axis of a joystick is inverted
@@ -211,10 +211,10 @@ public class TDifferentialDrive {
      * @return TMotorSpeeds object containing the calculated left and right motor
      *         speeds.
      */
-    public TMotorSpeeds tankDrive(TStickPosition leftStickPosition, TStickPosition rightStickPosition) {
+    public TSpeeds tankDrive(TStickPosition leftStickPosition, TStickPosition rightStickPosition) {
 
         if (leftStickPosition == null || rightStickPosition == null) {
-            return new TMotorSpeeds();
+            return new TSpeeds();
         }
 
         double leftSpeed = -leftStickPosition.y;
@@ -228,7 +228,7 @@ public class TDifferentialDrive {
             rightSpeed = 0;
         }
 
-        return new TMotorSpeeds(leftSpeed, rightSpeed);
+        return new TSpeeds(leftSpeed, rightSpeed);
     }
 
     // This routine scales a joystick value to make the

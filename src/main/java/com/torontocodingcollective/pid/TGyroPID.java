@@ -45,8 +45,7 @@ public class TGyroPID extends PIDController {
      * <p>
      * NOTE: If the PID is disabled, this routine returns 0.
      * 
-     * @param rawRate
-     *            the raw encoder rate used as feedback for this PID
+     * @param currentGyroAngle the angle from the gyro
      * @return the calculated result. This result can also be retrieved with
      *         subsequent calls to {@link #get()}.
      */

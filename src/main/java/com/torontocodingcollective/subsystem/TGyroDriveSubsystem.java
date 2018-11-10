@@ -29,9 +29,9 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
      * {@link #rotateToHeading(double)} to enable the gyroPID, and
      * {@link #disableGyroPid()} to disable the gyroPID.
      * 
-     * @param leftMotor
+     * @param leftSpeedController
      *            that extends the {@link TSpeedController}
-     * @param rightMotor
+     * @param rightSpeedController
      *            that extends {@link TSpeedController}
      * @param gyro
      *            that extends {@link TGyro}
@@ -47,9 +47,9 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
      *            used to control the rotation of the robot when rotating to an
      *            angle
      */
-    public TGyroDriveSubsystem(TSpeedController leftMotor, TSpeedController rightMotor, TGyro gyro, double gyroKP,
+    public TGyroDriveSubsystem(TSpeedController leftSpeedController, TSpeedController rightSpeedController, TGyro gyro, double gyroKP,
             double gyroKI, double maxRotationOutput) {
-        super(leftMotor, rightMotor);
+        super(leftSpeedController, rightSpeedController);
 
         this.gyro = gyro;
         gyroPid = new TGyroPID(gyroKP, gyroKI);
@@ -65,9 +65,9 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
      * {@link #rotateToHeading(double)} to enable the gyroPID, and
      * {@link #disableGyroPid()} to disable the gyroPID.
      * 
-     * @param leftMotor
+     * @param leftSpeedController
      *            that extends the {@link TSpeedController}
-     * @param rightMotor
+     * @param rightSpeedController
      *            that extends {@link TSpeedController}
      * @param leftEncoder
      *            encoder for the left motor
@@ -95,11 +95,15 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
      *            used to control the rotation of the robot when rotating to an
      *            angle
      */
-    public TGyroDriveSubsystem(TSpeedController leftMotor, TSpeedController rightMotor, TEncoder leftEncoder,
-            TEncoder rightEncoder, double encoderCountsPerInch, double speedKP, double maxEncoderSpeed, TGyro gyro,
-            double gyroKP, double gyroKI, double maxRotationOutput) {
+    public TGyroDriveSubsystem(TSpeedController leftSpeedController, TSpeedController rightSpeedController, 
+            TEncoder leftEncoder, TEncoder rightEncoder, 
+            double encoderCountsPerInch, double speedKP, double maxEncoderSpeed, 
+            TGyro gyro, double gyroKP, double gyroKI, double maxRotationOutput) {
 
-        super(leftMotor, rightMotor, leftEncoder, rightEncoder, encoderCountsPerInch, speedKP, maxEncoderSpeed);
+        super(leftSpeedController, rightSpeedController, 
+                leftEncoder, rightEncoder, 
+                encoderCountsPerInch, 
+                speedKP, maxEncoderSpeed);
 
         this.gyro = gyro;
         gyroPid = new TGyroPID(gyroKP, gyroKI);
@@ -135,7 +139,8 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
 
         // If the gain is set to zero, the pid cannot be enabled
         if (gyroPid.getP() == 0 && gyroPid.getI() == 0) {
-            System.out.println("The GyroPid cannot be enabled until" + " the PID Kp or Ki value is set.");
+            System.out.println("The GyroPid cannot be enabled until" 
+        + " the PID Kp or Ki value is set.");
             return;
         }
 
@@ -241,12 +246,14 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
         // If the gain is set to zero, the pid cannot be enabled
         if (gyroPid.getP() == 0 && gyroPid.getI() == 0) {
             System.out.println(
-                    "The GyroPid cannot be enabled until" + " the PID Kp or Ki value is set.  Cannot rotateToHeading");
+                    "The GyroPid cannot be enabled until" 
+            + " the PID Kp or Ki value is set.  Cannot rotateToHeading");
             return;
         }
 
         if (speedSetpoint <= 0 || speedSetpoint > maxRotationOutput) {
-            System.out.println("Cannot rotate at speed " + speedSetpoint + " overriding to " + maxRotationOutput);
+            System.out.println("Cannot rotate at speed " + speedSetpoint 
+                    + " overriding to " + maxRotationOutput);
             speedSetpoint = maxRotationOutput;
         }
 
@@ -267,7 +274,7 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
      *         value of 1.0 or -1.0 indicates the robot is rotating on the spot to
      *         get as quickly as possible to the required heading.
      */
-    private double setDriveOnHeadingMotorSpeeds() {
+    private double setDriveOnHeadingSpeeds() {
 
         double angleError = gyroPid.getError(gyro.getAngle());
 
@@ -364,7 +371,7 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
         this.maxRotationOutput = maxRotationOutput;
     }
 
-    private double setRotateToHeadingMotorSpeeds() {
+    private double setRotateToHeadingSpeeds() {
 
         double angleError = gyroPid.getError(gyro.getAngle());
 
@@ -423,9 +430,9 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
             gyroPid.calculate(gyro.getAngle());
 
             if (mode == Mode.DRIVE_ON_HEADING) {
-                steering = setDriveOnHeadingMotorSpeeds();
+                steering = setDriveOnHeadingSpeeds();
             } else {
-                steering = setRotateToHeadingMotorSpeeds();
+                steering = setRotateToHeadingSpeeds();
             }
         }
 

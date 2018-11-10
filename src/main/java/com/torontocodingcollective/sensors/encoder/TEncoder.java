@@ -28,6 +28,59 @@ public abstract class TEncoder {
     }
 
     /**
+     * Get the distance of this encoder
+     * 
+     * @return distance in encoder counts
+     */
+    public abstract int get();
+
+    /**
+     * Invert the raw distance if required
+     * 
+     * @param rawDistance
+     * @return int inverted distance
+     */
+    protected int get(int rawDistance) {
+
+        if (isInverted) {
+            rawDistance = -rawDistance;
+        }
+
+        return rawDistance + offset;
+    }
+
+    /**
+     * Get the rate (speed) of this encoder
+     * 
+     * @return speed in encoder counts/second
+     */
+    public abstract double getRate();
+
+    /**
+     * Invert the raw rate if required
+     * 
+     * @param rawRate
+     * @return double raw rate inverted if required
+     */
+    protected double getRate(double rawRate) {
+
+        if (isInverted) {
+            return -rawRate;
+        }
+
+        return rawRate;
+    }
+
+    /**
+     * Returns whether the current speed controller is 
+     * inverted
+     * @return {@code true} if inverted, {@code false} otherwise
+     */
+    public boolean isInverted() {
+        return this.isInverted;
+    }
+
+    /**
      * Reset the encoder counts for this encoder
      */
     public void reset() {
@@ -68,50 +121,6 @@ public abstract class TEncoder {
             this.isInverted = isInverted;
             reset();
         }
-    }
-
-    /**
-     * Get the distance of this encoder
-     * 
-     * @return distance in encoder counts
-     */
-    public abstract int get();
-
-    /**
-     * Get the rate (speed) of this encoder
-     * 
-     * @return speed in encoder counts/second
-     */
-    public abstract double getRate();
-
-    /**
-     * Invert the raw distance if required
-     * 
-     * @param rawDistance
-     * @return int inverted distance
-     */
-    protected int get(int rawDistance) {
-
-        if (isInverted) {
-            rawDistance = -rawDistance;
-        }
-
-        return rawDistance + offset;
-    }
-
-    /**
-     * Invert the raw rate if required
-     * 
-     * @param rawRate
-     * @return double raw rate inverted if required
-     */
-    protected double getRate(double rawRate) {
-
-        if (isInverted) {
-            return -rawRate;
-        }
-
-        return rawRate;
     }
 
 }
