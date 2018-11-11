@@ -16,6 +16,9 @@ import com.torontocodingcollective.subsystem.TDriveSubsystem;
  */
 public class TDriveTimeCommand extends TSafeCommand {
 
+    private static final String COMMAND_NAME = 
+            TDriveTimeCommand.class.getSimpleName();
+
     private double                speed;
     private final boolean         brakeWhenFinished;
 
@@ -73,9 +76,26 @@ public class TDriveTimeCommand extends TSafeCommand {
 
         this.brakeWhenFinished = brakeWhenFinished;
     }
-
+    
+    @Override
+    protected String getCommandName() { return COMMAND_NAME; }
+    
+    @Override
+    protected String getParmDesc() { 
+        return "speed " + this.speed 
+                + ", brakeWhenFinished " + this.brakeWhenFinished 
+                + ", " + super.getParmDesc(); 
+    }
+    
     @Override
     protected void initialize() {
+        
+        // Only print the command start message
+        // if this command was not subclassed
+        if (getCommandName().equals(COMMAND_NAME)) {
+            logMessage(getParmDesc() + " starting");
+        }
+
         driveSubsystem.setSpeed(speed, speed);
     }
 
@@ -126,4 +146,5 @@ public class TDriveTimeCommand extends TSafeCommand {
             driveSubsystem.setSpeed(0, 0);
         }
     }
+    
 }

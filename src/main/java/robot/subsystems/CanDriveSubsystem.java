@@ -52,18 +52,16 @@ public class CanDriveSubsystem extends TGyroDriveSubsystem {
                 RobotConst.DRIVE_GYRO_PID_KI, 
                 RobotConst.DRIVE_MAX_ROTATION_OUTPUT);
 
-        // Get the encoders attached to the CAN bus speed controller and set the
-        // inversion
+        // Get the encoders attached to the CAN bus speed controllers
         TEncoder leftEncoder = getSpeedController(TSide.LEFT).getEncoder();
-        leftEncoder.setInverted(RobotMap.LEFT_DRIVE_CAN_ENCODER_ISINVERTED);
-
         TEncoder rightEncoder = getSpeedController(TSide.RIGHT).getEncoder();
-        rightEncoder.setInverted(RobotMap.RIGHT_DRIVE_CAN_ENCODER_ISINVERTED);
 
         super.setEncoders(
-                leftEncoder, rightEncoder, 
+                leftEncoder,  RobotMap.LEFT_DRIVE_CAN_MOTOR_ISINVERTED,
+                rightEncoder, RobotMap.RIGHT_DRIVE_CAN_MOTOR_ISINVERTED, 
                 RobotConst.ENCODER_COUNTS_PER_INCH, 
                 RobotConst.DRIVE_SPEED_PID_KP,
+                RobotConst.DRIVE_SPEED_PID_KI,
                 RobotConst.MAX_LOW_GEAR_SPEED);
     }
 

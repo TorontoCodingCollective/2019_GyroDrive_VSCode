@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.commands.AutonomousCommand;
+import robot.oi.AutoSelector;
 import robot.oi.OI;
 import robot.subsystems.CameraSubsystem;
 import robot.subsystems.CanDriveSubsystem;
@@ -57,6 +58,8 @@ public class Robot extends IterativeRobot {
         for (TSubsystem subsystem : subsystemLs) {
             subsystem.init();
         }
+        
+        AutoSelector.init();
     }
 
     /**

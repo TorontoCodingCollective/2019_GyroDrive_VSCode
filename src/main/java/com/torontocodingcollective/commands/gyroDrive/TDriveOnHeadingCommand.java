@@ -16,6 +16,9 @@ import com.torontocodingcollective.subsystem.TGyroDriveSubsystem;
  */
 public class TDriveOnHeadingCommand extends TSafeCommand {
 
+    private static final String COMMAND_NAME = 
+            TDriveOnHeadingCommand.class.getSimpleName();
+    
     private double                    heading;
     private double                    speed;
     private final boolean             brakeWhenFinished;
@@ -71,7 +74,8 @@ public class TDriveOnHeadingCommand extends TSafeCommand {
      * @param driveSubsystem
      *            that extends the TGyroDriveSubsystem
      */
-    public TDriveOnHeadingCommand(double heading, double speed, double timeout, boolean brakeWhenFinished, TOi oi,
+    public TDriveOnHeadingCommand(double heading, double speed, double timeout, 
+            boolean brakeWhenFinished, TOi oi,
             TGyroDriveSubsystem driveSubsystem) {
 
         super(timeout, oi);
@@ -82,8 +86,9 @@ public class TDriveOnHeadingCommand extends TSafeCommand {
 
         if (heading < 0 || heading >= 360) {
             System.out.println(
-                    "Heading on DriveOnHeadingCommand must be >= 0 or < 360 degrees. " + heading
-                            + " is invalid.  Command ending immediately");
+                    "Heading on " + COMMAND_NAME 
+                    + " must be >= 0 or < 360 degrees. " + heading
+                    + " is invalid.  Command ending immediately");
             error = true;
             this.brakeWhenFinished = true;
             return;
@@ -96,7 +101,25 @@ public class TDriveOnHeadingCommand extends TSafeCommand {
     }
 
     @Override
+    protected String getCommandName() { return COMMAND_NAME; }
+    
+    @Override
+    protected String getParmDesc() { 
+        return "heading " + this.heading 
+                + ", speed " + this.speed 
+                + ", brake " + this.brakeWhenFinished 
+                + ", " + super.getParmDesc(); 
+    }
+
+    @Override
     protected void initialize() {
+        
+        // Only print the command start message
+        // if this command was not subclassed
+        if (getCommandName().equals(COMMAND_NAME)) {
+            logMessage(getParmDesc() + " starting");
+        }
+
         if (!error) {
             driveSubsystem.driveOnHeading(speed, heading);
         }
@@ -141,6 +164,7 @@ public class TDriveOnHeadingCommand extends TSafeCommand {
     protected boolean isFinished() {
 
         if (error) {
+            logMessage("Ended with error - see previous message for details");
             return true;
         }
 

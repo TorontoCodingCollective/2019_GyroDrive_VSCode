@@ -1,6 +1,7 @@
 package robot.commands;
 
 import com.torontocodingcollective.TConst;
+import com.torontocodingcollective.commands.drive.TDriveTimeCommand;
 import com.torontocodingcollective.commands.gyroDrive.TDriveOnHeadingDistanceCommand;
 import com.torontocodingcollective.commands.gyroDrive.TRotateToHeadingCommand;
 
@@ -46,43 +47,62 @@ public class AutonomousCommand extends CommandGroup {
 
         // getting info
         String robotStartPosition = AutoSelector.getRobotStartPosition();
+        String pattern            = AutoSelector.getPattern();
 
         // Print out the user selection and Game config for debug later
         System.out.println("Auto Command Configuration");
         System.out.println("--------------------------");
         System.out.println("Robot Position : " + robotStartPosition);
+        System.out.println("Pattern        : " + pattern);
 
-        // Go forward 2 ft
-        this.addSequential(
-                // 24 in, 0 deg, .5 speed, 5 sec, Brake
-                new TDriveOnHeadingDistanceCommand(24, 0, .5, 5, TConst.COAST_WHEN_FINISHED, Robot.oi,
-                        Robot.driveSubsystem));
+        if (pattern.equals(AutoSelector.PATTERN_STRAIGHT)) {
+            // Go forward 2 ft
+            this.addSequential(
+                    // 24 in, 0 deg, .5 speed, 5 sec, Brake
+                    new TDriveOnHeadingDistanceCommand(250, 0, .95, 15, TConst.BRAKE_WHEN_FINISHED, 
+                            Robot.oi, Robot.driveSubsystem));
+        }
 
-        // Drive a 3 ft box
-        this.addSequential(
-                new TDriveOnHeadingDistanceCommand(36, 0, .5, 5, TConst.BRAKE_WHEN_FINISHED, Robot.oi,
-                        Robot.driveSubsystem));
+        if (pattern.equals(AutoSelector.PATTERN_STR_NP)) {
+            // Go forward 2 ft
+            this.addSequential(
+                    // 24 in, 0 deg, .5 speed, 5 sec, Brake
+                    new TDriveTimeCommand(.5, 6, TConst.BRAKE_WHEN_FINISHED, 
+                            Robot.oi, Robot.driveSubsystem));
+        }
 
-        this.addSequential(new TRotateToHeadingCommand(90, Robot.oi, Robot.driveSubsystem));
 
-        this.addSequential(
-                new TDriveOnHeadingDistanceCommand(36, 90, .5, 5, TConst.BRAKE_WHEN_FINISHED, Robot.oi,
-                        Robot.driveSubsystem));
+        if (pattern.equals(AutoSelector.PATTERN_BOX)) {
+            // Go forward 2 ft
+            this.addSequential(
+                    // 24 in, 0 deg, .5 speed, 5 sec, Brake
+                    new TDriveOnHeadingDistanceCommand(24, 0, .5, 5, TConst.COAST_WHEN_FINISHED, 
+                            Robot.oi, Robot.driveSubsystem));
 
-        this.addSequential(new TRotateToHeadingCommand(180, Robot.oi, Robot.driveSubsystem));
+            // Drive a 3 ft box
+            this.addSequential(
+                    new TDriveOnHeadingDistanceCommand(36, 0, .5, 5, TConst.BRAKE_WHEN_FINISHED, 
+                            Robot.oi, Robot.driveSubsystem));
 
-        this.addSequential(
-                new TDriveOnHeadingDistanceCommand(36, 180, .5, 5, TConst.BRAKE_WHEN_FINISHED, Robot.oi,
-                        Robot.driveSubsystem));
+            this.addSequential(new TRotateToHeadingCommand(90, Robot.oi, Robot.driveSubsystem));
 
-        this.addSequential(new TRotateToHeadingCommand(270, Robot.oi, Robot.driveSubsystem));
+            this.addSequential(
+                    new TDriveOnHeadingDistanceCommand(36, 90, .5, 5, TConst.BRAKE_WHEN_FINISHED,
+                            Robot.oi, Robot.driveSubsystem));
 
-        this.addSequential(
-                new TDriveOnHeadingDistanceCommand(36, 270, .5, 5, TConst.BRAKE_WHEN_FINISHED, Robot.oi,
-                        Robot.driveSubsystem));
+            this.addSequential(new TRotateToHeadingCommand(180, Robot.oi, Robot.driveSubsystem));
 
-        this.addSequential(new TRotateToHeadingCommand(0, Robot.oi, Robot.driveSubsystem));
+            this.addSequential(
+                    new TDriveOnHeadingDistanceCommand(36, 180, .5, 5, TConst.BRAKE_WHEN_FINISHED, 
+                            Robot.oi, Robot.driveSubsystem));
 
+            this.addSequential(new TRotateToHeadingCommand(270, Robot.oi, Robot.driveSubsystem));
+
+            this.addSequential(
+                    new TDriveOnHeadingDistanceCommand(36, 270, .5, 5, TConst.BRAKE_WHEN_FINISHED, 
+                            Robot.oi, Robot.driveSubsystem));
+
+            this.addSequential(new TRotateToHeadingCommand(0, Robot.oi, Robot.driveSubsystem));
+        }
     }
-
 }

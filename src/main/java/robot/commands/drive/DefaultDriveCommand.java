@@ -15,8 +15,11 @@ import robot.subsystems.CanDriveSubsystem;
  */
 public class DefaultDriveCommand extends TDefaultDriveCommand {
 
-    OI                 oi                = Robot.oi;
-    CanDriveSubsystem     driveSubsystem    = Robot.driveSubsystem;
+    private static final String COMMAND_NAME = 
+            DefaultDriveCommand.class.getSimpleName();
+    
+    OI                oi                = Robot.oi;
+    CanDriveSubsystem driveSubsystem    = Robot.driveSubsystem;
 
     TDifferentialDrive differentialDrive = new TDifferentialDrive();
 
@@ -25,10 +28,28 @@ public class DefaultDriveCommand extends TDefaultDriveCommand {
         // which also contains the requires(driveSubsystem) statement
         super(Robot.oi, Robot.driveSubsystem);
     }
+    
+    @Override
+    protected String getCommandName() {
+        return COMMAND_NAME;
+    }
+
+    @Override
+    protected String getParmDesc() {
+        return super.getParmDesc();
+    }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        
+        // Print the command parameters if this is the current
+        // called command (it was not sub-classed)
+        if (getCommandName().equals(COMMAND_NAME)) {
+            logMessage(getParmDesc() + " starting");
+        }
+        
+        super.initialize();
     }
 
     // Called repeatedly when this Command is scheduled to run

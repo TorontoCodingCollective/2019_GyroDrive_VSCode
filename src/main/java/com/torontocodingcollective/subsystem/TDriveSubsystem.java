@@ -1,5 +1,6 @@
 package com.torontocodingcollective.subsystem;
 
+import com.torontocodingcollective.TUtil;
 import com.torontocodingcollective.pid.TSpeedPID;
 import com.torontocodingcollective.sensors.encoder.TEncoder;
 import com.torontocodingcollective.speedcontroller.TSpeedController;
@@ -45,7 +46,7 @@ public abstract class TDriveSubsystem extends TSubsystem {
      */
     public TDriveSubsystem(TSpeedController leftSpeedController, TSpeedController rightSpeedController) {
 
-        this(leftSpeedController, rightSpeedController, null, null, 0, 0, 0);
+        this(leftSpeedController, rightSpeedController, null, null, 0, 0, 0, 0);
     }
 
     /**
@@ -65,7 +66,11 @@ public abstract class TDriveSubsystem extends TSubsystem {
      *            encoder for the right motor
      * @param encoderCountsPerInch
      * @param kP
-     *            Default Proportional gain for the motor speed pid. The speed PIDs
+     *            Proportional gain for the motor speed pid. The speed PIDs
+     *            are displayed on the SmartDashboard and can be adjusted through
+     *            that interface
+     * @param kI
+     *            Integral gain for the motor speed pid. The speed PIDs
      *            are displayed on the SmartDashboard and can be adjusted through
      *            that interface
      * @param maxEncoderSpeed
@@ -74,7 +79,7 @@ public abstract class TDriveSubsystem extends TSubsystem {
      */
     public TDriveSubsystem(TSpeedController leftSpeedController, TSpeedController rightSpeedController, 
             TEncoder leftEncoder,TEncoder rightEncoder, 
-            double encoderCountsPerInch, double kP, double maxEncoderSpeed) {
+            double encoderCountsPerInch, double kP, double kI, double maxEncoderSpeed) {
 
         this.leftSpeedController = leftSpeedController;
         this.rightSpeedController = rightSpeedController;
@@ -83,8 +88,8 @@ public abstract class TDriveSubsystem extends TSubsystem {
 
         this.encoderCountsPerInch = encoderCountsPerInch;
 
-        leftSpeedPid = new TSpeedPID(kP);
-        rightSpeedPid = new TSpeedPID(kP);
+        leftSpeedPid = new TSpeedPID(kP, kI);
+        rightSpeedPid = new TSpeedPID(kP, kI);
 
         speedPidsEnabled = false;
     }
@@ -155,7 +160,9 @@ public abstract class TDriveSubsystem extends TSubsystem {
         if (encoderCountsPerInch == 0) {
             return getEncoderDistance();
         }
-        return getEncoderDistance() / encoderCountsPerInch;
+        
+        // Round to 2 decimal places
+        return TUtil.round(getEncoderDistance() / encoderCountsPerInch, 2);
     }
 
     /** 
@@ -251,35 +258,6 @@ public abstract class TDriveSubsystem extends TSubsystem {
      * {@code ((TCanSpeedController) xxxxSpeedController).getEncoder(); }
      * 
      * @param leftEncoder
-     * @param leftIsInverted
-     *            {@code true} if the encoder is inverted, {@code false} otherwise
-     * @param rightEncoder
-     * @param rightIsInverted
-     *            {@code true} if the encoder is inverted, {@code false} otherwise
-     * @param encoderCountsPerInch
-     */
-    public void setEncoders(TEncoder leftEncoder, boolean leftIsInverted, TEncoder rightEncoder,
-            boolean rightIsInverted, double encoderCountsPerInch) {
-
-        setEncoders(leftEncoder, rightEncoder, encoderCountsPerInch);
-
-        if (leftEncoder != null) {
-            this.leftEncoder.setInverted(leftIsInverted);
-        }
-        if (rightEncoder != null) {
-            this.rightEncoder.setInverted(rightIsInverted);
-        }
-    }
-
-    /**
-     * Initialize the encoders for this drive subsystem. This method is used when
-     * the encoders are attached to a channel that is used by another device and
-     * must be constructed after this subsystem. For example, if an encoder is
-     * attached to a CAN based TalonSRX device, the encoder can be retrieved from
-     * the TalonSRX using the code: <br>
-     * {@code ((TCanSpeedController) xxxxSpeedController).getEncoder(); }
-     * 
-     * @param leftEncoder
      * @param leftInverted
      *            {@code true} if the encoder is inverted, {@code false} otherwise
      * @param rightEncoder
@@ -287,45 +265,25 @@ public abstract class TDriveSubsystem extends TSubsystem {
      *            {@code true} if the encoder is inverted, {@code false} otherwise
      * @param encoderCountsPerInch
      * @param kP
-     *            value to initialize the motor speed Pids
+     *            Proportional gain for the motor speed pid. The speed PIDs
+     *            are displayed on the SmartDashboard and can be adjusted through
+     *            that interface
+     * @param kI
+     *            Integral gain for the motor speed pid. The speed PIDs
+     *            are displayed on the SmartDashboard and can be adjusted through
+     *            that interface
      * @param maxEncoderSpeed
      *            to use to scale the encoder feedback
      */
     public void setEncoders(TEncoder leftEncoder, boolean leftInverted, 
             TEncoder rightEncoder, boolean rightInverted,
-            double encoderCountsPerInch, double kP, double maxEncoderSpeed) {
+            double encoderCountsPerInch, double kP, double kI, double maxEncoderSpeed) {
 
-        setEncoders(leftEncoder, leftInverted, 
-                rightEncoder, rightInverted, 
-                encoderCountsPerInch);
+        leftEncoder.setInverted(leftInverted);
+        rightEncoder.setInverted(rightInverted);
 
-        setMaxEncoderSpeed(maxEncoderSpeed);
-        setSpeedPidGain(kP);
-    }
-
-    /**
-     * Initialize the encoders for this drive subsystem. This method is used when
-     * the encoders are attached to a channel that is used by another device and
-     * must be constructed after this subsystem. For example, if an encoder is
-     * attached to a CAN based TalonSRX device, the encoder can be retrieved from
-     * the TalonSRX using the code: <br>
-     * {@code ((TCanSpeedController) xxxxSpeedController).getEncoder(); } <br>
-     * In this case, the inversion of the encoder is set to match the motor.
-     * 
-     * @param leftEncoder
-     * @param rightEncoder
-     */
-    public void setEncoders(TEncoder leftEncoder, TEncoder rightEncoder, 
-            double encoderCountsPerInch) {
-        
-        this.leftEncoder = leftEncoder;
-        this.rightEncoder = rightEncoder;
-        setEncoderCountsPerInch(encoderCountsPerInch);
-
-        // Disable the PIDs if either encoder is null
-        if (leftEncoder == null || rightEncoder == null) {
-            disableSpeedPids();
-        }
+        setEncoders(leftEncoder, rightEncoder, encoderCountsPerInch, 
+                kP, kI, maxEncoderSpeed);
     }
 
     /**
@@ -339,18 +297,33 @@ public abstract class TDriveSubsystem extends TSubsystem {
      * @param leftEncoder
      * @param rightEncoder
      * @param kP
-     *            value to initialize the motor speed Pids
+     *            Proportional gain for the motor speed pid. The speed PIDs
+     *            are displayed on the SmartDashboard and can be adjusted through
+     *            that interface
+     * @param kI
+     *            Integral gain for the motor speed pid. The speed PIDs
+     *            are displayed on the SmartDashboard and can be adjusted through
+     *            that interface
      * @param maxEncoderSpeed
      *            to use to scale the encoder feedback
      */
     public void setEncoders(TEncoder leftEncoder, TEncoder rightEncoder, 
             double encoderCountsPerInch, 
-            double kP, double maxEncoderSpeed) {
+            double kP, double kI, double maxEncoderSpeed) {
 
-        setEncoders(leftEncoder, rightEncoder, encoderCountsPerInch);
+        this.leftEncoder = leftEncoder;
+        this.rightEncoder = rightEncoder;
 
-        setMaxEncoderSpeed(maxEncoderSpeed);
-        setSpeedPidGain(kP);
+        setEncoderCountsPerInch(encoderCountsPerInch);
+
+        // Disable the PIDs if either encoder is null
+        if (leftEncoder == null || rightEncoder == null) {
+            disableSpeedPids();
+        }
+        else {
+            setSpeedPidGain(kP, kI);
+            setMaxEncoderSpeed(maxEncoderSpeed);
+        }
     }
 
     /**
@@ -374,14 +347,18 @@ public abstract class TDriveSubsystem extends TSubsystem {
      *            the maximum speed of the encoder when the output is driven at full
      *            value under a typical load scenario.
      * @param kP
-     *            the proportional gain to use for the speed controllers. This
-     *            parameter will change the speed pid gain, but will not change
-     *            whether or not the speed pids are enabled.
+     *            Proportional gain for the motor speed pid. The speed PIDs
+     *            are displayed on the SmartDashboard and can be adjusted through
+     *            that interface
+     * @param kI
+     *            Integral gain for the motor speed pid. The speed PIDs
+     *            are displayed on the SmartDashboard and can be adjusted through
+     *            that interface
      */
 
-    public void setMaxEncoderSpeed(double maxEncoderSpeed, double kP) {
+    public void setMaxEncoderSpeed(double maxEncoderSpeed, double kP, double kI) {
         setMaxEncoderSpeed(maxEncoderSpeed);
-        setSpeedPidGain(kP);
+        setSpeedPidGain(kP, kI);
     }
 
     /**
@@ -429,12 +406,15 @@ public abstract class TDriveSubsystem extends TSubsystem {
      * 
      * @param kP
      */
-    public void setSpeedPidGain(double kP) {
+    public void setSpeedPidGain(double kP, double kI) {
 
         leftSpeedPid.setP(kP);
-        rightSpeedPid.setP(kP);
+        leftSpeedPid.setI(kI);
 
-        if (kP == 0) {
+        rightSpeedPid.setP(kP);
+        rightSpeedPid.setI(kI);
+
+        if (kP == 0 && kI == 0) {
             disableSpeedPids();
         }
     }

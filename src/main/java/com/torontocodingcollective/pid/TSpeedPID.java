@@ -48,12 +48,12 @@ public class TSpeedPID extends PIDController {
             return 0;
         }
 
-        if (normalizedRate > 1.0) {
-            normalizedRate = 1.0;
+        if (normalizedRate > 1.5) {
+            normalizedRate = 1.5;
         }
 
-        if (normalizedRate < -1.0) {
-            normalizedRate = -1.0;
+        if (normalizedRate < -1.5) {
+            normalizedRate = -1.5;
         }
 
         // Calculate the error

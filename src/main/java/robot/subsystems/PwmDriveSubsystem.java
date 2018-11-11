@@ -57,8 +57,9 @@ public class PwmDriveSubsystem extends TGyroDriveSubsystem {
                 
                 // Encoder counts per inch
                 RobotConst.ENCODER_COUNTS_PER_INCH, 
-                // Speed PID Kp
+                // Speed PID Kp, Ki
                 RobotConst.DRIVE_SPEED_PID_KP,
+                RobotConst.DRIVE_SPEED_PID_KI,
                 // Max Encoder Speed
                 RobotConst.MAX_LOW_GEAR_SPEED,
                 

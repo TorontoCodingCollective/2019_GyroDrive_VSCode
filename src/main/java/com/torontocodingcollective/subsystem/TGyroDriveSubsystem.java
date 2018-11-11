@@ -47,8 +47,9 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
      *            used to control the rotation of the robot when rotating to an
      *            angle
      */
-    public TGyroDriveSubsystem(TSpeedController leftSpeedController, TSpeedController rightSpeedController, TGyro gyro, double gyroKP,
-            double gyroKI, double maxRotationOutput) {
+    public TGyroDriveSubsystem(TSpeedController leftSpeedController, TSpeedController rightSpeedController, 
+            TGyro gyro, double gyroKP, double gyroKI, double maxRotationOutput) {
+        
         super(leftSpeedController, rightSpeedController);
 
         this.gyro = gyro;
@@ -75,7 +76,11 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
      *            encoder for the right motor
      * @param encoderCountsPerInch
      * @param speedKP
-     *            Default Proportional gain for the motor speed pid. The speed PIDs
+     *            Proportional gain for the motor speed pid. The speed PIDs
+     *            are displayed on the SmartDashboard and can be adjusted through
+     *            that interface
+     * @param speedKI
+     *            Integral gain for the motor speed pid. The speed PIDs
      *            are displayed on the SmartDashboard and can be adjusted through
      *            that interface
      * @param maxEncoderSpeed
@@ -97,13 +102,13 @@ public abstract class TGyroDriveSubsystem extends TDriveSubsystem {
      */
     public TGyroDriveSubsystem(TSpeedController leftSpeedController, TSpeedController rightSpeedController, 
             TEncoder leftEncoder, TEncoder rightEncoder, 
-            double encoderCountsPerInch, double speedKP, double maxEncoderSpeed, 
+            double encoderCountsPerInch, double speedKP, double speedKI, double maxEncoderSpeed, 
             TGyro gyro, double gyroKP, double gyroKI, double maxRotationOutput) {
 
         super(leftSpeedController, rightSpeedController, 
                 leftEncoder, rightEncoder, 
                 encoderCountsPerInch, 
-                speedKP, maxEncoderSpeed);
+                speedKP, speedKI, maxEncoderSpeed);
 
         this.gyro = gyro;
         gyroPid = new TGyroPID(gyroKP, gyroKI);

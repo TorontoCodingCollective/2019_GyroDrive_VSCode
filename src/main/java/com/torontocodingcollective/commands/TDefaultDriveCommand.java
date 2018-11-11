@@ -1,11 +1,11 @@
 package com.torontocodingcollective.commands;
 
+import com.torontocodingcollective.TConst;
 import com.torontocodingcollective.commands.gyroDrive.TRotateToHeadingCommand;
 import com.torontocodingcollective.oi.TOi;
 import com.torontocodingcollective.subsystem.TDriveSubsystem;
 import com.torontocodingcollective.subsystem.TGyroDriveSubsystem;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
@@ -19,13 +19,19 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  * <li>POV to rotate to angle 
  * </ls>
  */
-public class TDefaultDriveCommand extends Command {
+public class TDefaultDriveCommand extends TSafeCommand {
 
+    private final static String COMMAND_NAME = 
+            TDefaultDriveCommand.class.getSimpleName();
+    
     private final TOi                 oi;
     private final TDriveSubsystem     driveSubsystem;
     private final TGyroDriveSubsystem gyroDriveSubsystem;
 
     public TDefaultDriveCommand(TOi oi, TDriveSubsystem driveSubsystem) {
+
+        super(TConst.NO_COMMAND_TIMEOUT, oi);
+        
         requires(driveSubsystem);
 
         this.driveSubsystem = driveSubsystem;
@@ -39,7 +45,21 @@ public class TDefaultDriveCommand extends Command {
     }
 
     @Override
+    protected String getCommandName() { return COMMAND_NAME; }
+    
+    @Override
+    protected String getParmDesc() { 
+        return super.getParmDesc(); 
+    }
+    
+    @Override
     protected void initialize() {
+        
+        // Only print the command start message
+        // if this command was not subclassed
+        if (getCommandName().equals(COMMAND_NAME)) {
+            logMessage(getParmDesc() + " starting");
+        }
     }
 
     @Override
@@ -74,23 +94,11 @@ public class TDefaultDriveCommand extends Command {
                 Scheduler.getInstance().add(new TRotateToHeadingCommand(heading, oi, gyroDriveSubsystem));
             }
         }
-
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
         return false;
-    }
-
-    // Called once after isFinished returns true
-    @Override
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
     }
 }

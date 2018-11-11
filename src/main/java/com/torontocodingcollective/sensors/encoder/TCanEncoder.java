@@ -23,20 +23,20 @@ public class TCanEncoder extends TEncoder {
     public TCanEncoder(TalonSRX talonSRX, boolean isInverted) {
         super(isInverted);
         this.talonSRX = talonSRX;
-        talonSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        talonSRX.setSelectedSensorPosition(0);
+        talonSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,  0);
+        talonSRX.setSelectedSensorPosition(0, 0, 0);
     }
 
     @Override
     public int get() {
         // Convert the raw counts
-        return super.get(talonSRX.getSelectedSensorPosition());
+        return super.get(talonSRX.getSelectedSensorPosition(0));
     }
 
     @Override
     public double getRate() {
         // Convert the raw rate
-        return super.getRate(talonSRX.getSelectedSensorVelocity());
+        return super.getRate(talonSRX.getSelectedSensorVelocity(0));
     }
 
 }

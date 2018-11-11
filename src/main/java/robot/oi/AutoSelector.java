@@ -11,6 +11,12 @@ public class AutoSelector {
     public static final String            ROBOT_CENTER = "Robot Center";
     public static final String            ROBOT_RIGHT  = "Robot Right";
 
+    public static SendableChooser<String> pattern;
+
+    public static final String            PATTERN_STRAIGHT  = "Straight";
+    public static final String            PATTERN_STR_NP    = "Straight No PID";
+    public static final String            PATTERN_BOX       = "Box";
+
     static {
 
         // Robot Position Options
@@ -21,8 +27,25 @@ public class AutoSelector {
 
         SmartDashboard.putData("Robot Start", robotStartPosition);
 
+        // Robot Pattern Options
+        pattern = new SendableChooser<String>();
+        pattern.addObject(PATTERN_STRAIGHT, PATTERN_STRAIGHT);
+        pattern.addDefault(PATTERN_BOX, PATTERN_BOX);
+        pattern.addObject(PATTERN_STR_NP, PATTERN_STR_NP);
+
+        SmartDashboard.putData("Auto Pattern", pattern);
     }
 
+    /**
+     * Get the auto pattern.
+     * 
+     * @return "Straight" or "Box"
+     */
+    public static String getPattern() {
+
+        return pattern.getSelected();
+    }
+    
     /**
      * Get the robot starting position on the field.
      * 
@@ -33,4 +56,5 @@ public class AutoSelector {
         return robotStartPosition.getSelected();
     }
 
+    public static void init() {}
 }
