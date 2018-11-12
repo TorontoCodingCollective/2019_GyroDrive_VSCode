@@ -1,3 +1,6 @@
+
+[![Join the chat at https://gitter.im/torontocodingcollective/2019_GyroDrive_VSCode](https://badges.gitter.im/torontocodingcollective/2019_GyroDrive_VSCode.svg)](https://gitter.im/torontocodingcollective/2019_GyroDrive_VSCode?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 <h1>2019_GyroDrive_VSCode</h1>
 <p>Gitter: https://gitter.im/torontocodingcollective/GyroDrive
 <p>For 2019, WPILib will be moving to Visual Studio Code from eclipse.
