@@ -1,5 +1,5 @@
 
-[![Join the chat at https://gitter.im/torontocodingcollective/2019_GyroDrive_VSCode](https://badges.gitter.im/torontocodingcollective/2019_GyroDrive_VSCode.svg)](https://gitter.im/torontocodingcollective/2019_GyroDrive_VSCode?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/torontocodingcollective/GyroDrive](https://badges.gitter.im/torontocodingcollective/GyroDrive_VSCode.svg)](https://gitter.im/torontocodingcollective/GyroDrive?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 <h1>2019_GyroDrive_VSCode</h1>
 <p>Gitter: https://gitter.im/torontocodingcollective/GyroDrive
