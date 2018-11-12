@@ -1,6 +1,6 @@
 <h1>2019_GyroDrive_VSCode</h1>
-<p>
-For 2019, WPILib will be moving to Visual Studio Code from eclipse.
+<p>Gitter: https://gitter.im/torontocodingcollective/GyroDrive
+<p>For 2019, WPILib will be moving to Visual Studio Code from eclipse.
 <p>
 This GyroDrive project for Visual Studio Code uses the Alpha release of the WPILibs as of Oct 2018.  
 <p>
