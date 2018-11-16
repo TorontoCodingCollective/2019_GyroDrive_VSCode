@@ -152,8 +152,33 @@ public class TDifferentialDrive {
         if (singleStickPosition == null) {
             return new TSpeeds();
         }
-        // By convention the y axis of a joystick is inverted
-        return arcadeDrive(-singleStickPosition.y, singleStickPosition.x);
+        
+        // When driving using a single stick, an axis value of 1, 1 cannot be
+        // achieved since if the single stick is set to an angle of 45 degrees, the
+        // x and y axis will be set to approx .7.
+        //
+        // Each of the dimensions should be adjusted to the magnitude of the 
+        // vector distributed by the ratio of the x and y values.
+        double y = -singleStickPosition.y;
+        double x =  singleStickPosition.x;
+        
+        double magnitude = Math.sqrt(x*x + y*y);
+        
+        double scaledX = 0;
+        double scaledY = 0;
+        
+        if (Math.abs(x) > Math.abs(y)) {
+            scaledX = magnitude * Math.signum(x);
+            if (x != 0) {
+                scaledY = magnitude * Math.abs(y/x) * Math.signum(y);
+            }
+        } else {
+            scaledY = magnitude * Math.signum(y);
+            if (y != 0) {
+                scaledX = magnitude * Math.abs(x/y) * Math.signum(x);
+            }
+        }
+        return arcadeDrive(scaledY, scaledX);
     }
 
     /**
