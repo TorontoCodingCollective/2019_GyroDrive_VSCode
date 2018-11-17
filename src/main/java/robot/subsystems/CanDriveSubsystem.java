@@ -45,7 +45,7 @@ public class CanDriveSubsystem extends TGyroDriveSubsystem {
                         RobotMap.RIGHT_DRIVE_CAN_MOTOR_ISINVERTED),
 
                 // Gyro used for this subsystem
-                new TAnalogGyro(RobotMap.GYRO_PORT),
+                new TAnalogGyro(RobotMap.GYRO_PORT, RobotMap.GYRO_ISINVERTED),
 
                 // Gyro PID Constants
                 RobotConst.DRIVE_GYRO_PID_KP, 

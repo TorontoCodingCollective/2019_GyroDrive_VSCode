@@ -58,6 +58,7 @@ public class RobotMap {
     // Gyro Ports
     // ******************************************
     public static final int                     GYRO_PORT;
+    public static final boolean                 GYRO_ISINVERTED;
 
     // ******************************************
     // Pneumatics Ports
@@ -106,7 +107,8 @@ public class RobotMap {
             RIGHT_DRIVE_DIO_ENCODER_PORT1                     = 2;
             RIGHT_DRIVE_DIO_ENCODER_ISINVERTED                = TConst.NOT_INVERTED;
 
-            GYRO_PORT = 0;
+            GYRO_PORT       = 0;
+            GYRO_ISINVERTED = TConst.NOT_INVERTED;
         }
     }
 }

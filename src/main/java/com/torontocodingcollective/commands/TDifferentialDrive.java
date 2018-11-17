@@ -8,8 +8,8 @@ import com.torontocodingcollective.speedcontroller.TSpeeds;
  */
 public class TDifferentialDrive {
 
-    private static final double DEFAULT_INPUT_DEADBAND = 0.08;
-    private static final double DEFAULT_MOTOR_DEADBAND = 0.05;
+    private static final double DEFAULT_INPUT_DEADBAND = 0.07;
+    private static final double DEFAULT_MOTOR_DEADBAND = 0.03;
     private static final double MAX_DEADBAND           = .25;
 
     private double              inputDeadband          = 0.0;
