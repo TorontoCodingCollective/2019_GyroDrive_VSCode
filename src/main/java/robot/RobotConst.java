@@ -56,7 +56,7 @@ public class RobotConst {
             DRIVE_GYRO_PID_KP = .07;
             DRIVE_GYRO_PID_KI = DRIVE_GYRO_PID_KP / 20.0;
 
-            DRIVE_SPEED_PID_KP = 0.5;
+            DRIVE_SPEED_PID_KP = 0.4;
             DRIVE_SPEED_PID_KI = DRIVE_SPEED_PID_KP / 20.0;
  
             ENCODER_COUNTS_PER_INCH = 55.6;

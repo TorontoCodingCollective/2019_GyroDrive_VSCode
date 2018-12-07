@@ -93,22 +93,29 @@ public class TSpeedPID extends PIDController {
 
         if (kI != 0) {
 
-            totalError += error;
+            // If the setpoint is zero, then disable the 
+            // integral PID.
+            if (super.getSetpoint() == 0) {
+                totalError = 0;
+            }
+            else {
+                totalError += error;
 
-            double integralOutput = totalError * kI;
+                double integralOutput = totalError * kI;
 
-            if (integralOutput + totalOutput > 1.0) {
-                // Clamp the total error
-                totalError = (1.0 - totalOutput) / kI;
-                // set the total output to the limit
-                totalOutput = 1.0;
-            } else if (integralOutput + totalOutput < -1.0) {
-                // Clamp the total error
-                totalError = (-1.0 - totalOutput) / kI;
-                // set the total output to the limit
-                totalOutput = -1.0;
-            } else {
-                totalOutput += integralOutput;
+                if (integralOutput + totalOutput > 1.0) {
+                    // Clamp the total error
+                    totalError = (1.0 - totalOutput) / kI;
+                    // set the total output to the limit
+                    totalOutput = 1.0;
+                } else if (integralOutput + totalOutput < -1.0) {
+                    // Clamp the total error
+                    totalError = (-1.0 - totalOutput) / kI;
+                    // set the total output to the limit
+                    totalOutput = -1.0;
+                } else {
+                    totalOutput += integralOutput;
+                }
             }
         }
 
