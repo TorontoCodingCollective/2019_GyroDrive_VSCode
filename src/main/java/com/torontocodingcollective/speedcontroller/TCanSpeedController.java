@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.torontocodingcollective.TConst;
 import com.torontocodingcollective.sensors.encoder.TCanEncoder;
 import com.torontocodingcollective.sensors.encoder.TEncoder;
@@ -25,10 +27,15 @@ public class TCanSpeedController extends TSpeedController {
         /** Talon SRX see {@link TalonSRX} */
         TALON_SRX,
         /** Victor SPX see {@link VictorSPX} */
-        VICTOR_SPX
+        VICTOR_SPX,
+        /** SparkMax connected to a brushless motor */
+        SPARK_MAX_BRUSHLESS,
+        /** SparkMax connected to a brushed (non-NEO brushless) motor */
+        SPARK_MAX_BRUSHED
     }
 
-    private final BaseMotorController canSpeedController;
+    private final BaseMotorController canCtreSpeedController;
+    private final CANSparkMax         canSparkSpeedController;
 
     private double                    speedSetpoint = 0;
 
@@ -81,11 +88,26 @@ public class TCanSpeedController extends TSpeedController {
 
         super(isInverted);
 
-        canSpeedController = newController(controllerType, canAddress);
-
-        for (int followerCanAddress : followerCanAddresses) {
-            BaseMotorController follower = newController(controllerType, followerCanAddress);
-            follower.follow(canSpeedController);
+        switch (controllerType) {
+            case SPARK_MAX_BRUSHED:
+            case SPARK_MAX_BRUSHLESS:
+                canSparkSpeedController = newSparkController(controllerType, canAddress);
+                canCtreSpeedController = null;
+                for (int followerCanAddress : followerCanAddresses) {
+                    CANSparkMax follower = newSparkController(controllerType, followerCanAddress);
+                    follower.follow(canSparkSpeedController);
+                }
+                break;
+            case TALON_SRX:
+            case VICTOR_SPX:
+            default:
+                canSparkSpeedController = null;
+                canCtreSpeedController = newCtreController(controllerType, canAddress);
+                for (int followerCanAddress : followerCanAddresses) {
+                    BaseMotorController follower = newCtreController(controllerType, followerCanAddress);
+                    follower.follow(canCtreSpeedController);
+                }
+                break;
         }
     }
 
@@ -143,10 +165,37 @@ public class TCanSpeedController extends TSpeedController {
 
         super(isInverted);
 
-        canSpeedController = newController(controllerType, canAddress);
+        switch (controllerType) {
+            case SPARK_MAX_BRUSHED:
+            case SPARK_MAX_BRUSHLESS:
+                canSparkSpeedController = newSparkController(controllerType, canAddress);
+                canCtreSpeedController = null;
+                break;
+            case TALON_SRX:
+            case VICTOR_SPX:
+            default:
+                canSparkSpeedController = null;
+                canCtreSpeedController = newCtreController(controllerType, canAddress);
+                break;
+        }
 
-        BaseMotorController follower = newController(followerControllerType, followerCanAddress);
-        follower.follow(canSpeedController);
+        switch (followerControllerType) {
+            case SPARK_MAX_BRUSHED:
+            case SPARK_MAX_BRUSHLESS:
+                CANSparkMax sparkFollower = newSparkController(followerControllerType, followerCanAddress);
+                if (canSparkSpeedController != null) {
+                    sparkFollower.follow(canSparkSpeedController);
+                }
+                break;
+        case TALON_SRX:
+            case VICTOR_SPX:
+            default:
+                BaseMotorController ctreFollower = newCtreController(followerControllerType, followerCanAddress);
+                if (canCtreSpeedController != null) {
+                    ctreFollower.follow(canCtreSpeedController);
+                }
+                break;
+        }
     }
 
     /**
@@ -171,8 +220,11 @@ public class TCanSpeedController extends TSpeedController {
      */
     @Override
     public TEncoder getEncoder() {
-        if (this.canSpeedController instanceof TalonSRX) {
-            return new TCanEncoder((TalonSRX) canSpeedController, getInverted());
+
+        if (this.canCtreSpeedController != null) {
+            if (this.canCtreSpeedController instanceof TalonSRX) {
+                return new TCanEncoder((TalonSRX) canCtreSpeedController, getInverted());
+            }
         }
         return null;
     }
@@ -187,7 +239,28 @@ public class TCanSpeedController extends TSpeedController {
      * @return TCanSpeedController of the correct type. By default, the speed
      *         controller will be a TalonSRX.
      */
-    private BaseMotorController newController(TCanSpeedControllerType controllerType, int canAddress) {
+    private CANSparkMax newSparkController(TCanSpeedControllerType controllerType, int canAddress) {
+
+        switch (controllerType) {
+        case SPARK_MAX_BRUSHED:
+            return new CANSparkMax(canAddress, MotorType.kBrushed);
+        case SPARK_MAX_BRUSHLESS:
+        default:
+            return new CANSparkMax(canAddress, MotorType.kBrushless);
+        }
+    }
+
+    /**
+     * Get a new controller of the appropriate type at the given CAN address.
+     * 
+     * @param controllerType
+     *            a valid {@link TCanSpeedControllerType}
+     * @param canAddress
+     *            a valid unique CAN address
+     * @return TCanSpeedController of the correct type. By default, the speed
+     *         controller will be a TalonSRX.
+     */
+    private BaseMotorController newCtreController(TCanSpeedControllerType controllerType, int canAddress) {
 
         switch (controllerType) {
         case VICTOR_SPX:
@@ -206,7 +279,13 @@ public class TCanSpeedController extends TSpeedController {
         if (getInverted()) {
             speed = -speed;
         }
-        canSpeedController.set(ControlMode.PercentOutput, speed);
+
+        if (canCtreSpeedController != null) {
+            canCtreSpeedController.set(ControlMode.PercentOutput, speed);
+        }
+        else {
+            canSparkSpeedController.set(speed);
+        }
     }
 
 }
