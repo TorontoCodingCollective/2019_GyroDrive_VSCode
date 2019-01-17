@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.torontocodingcollective.TConst;
 import com.torontocodingcollective.sensors.encoder.TCanEncoder;
+import com.torontocodingcollective.sensors.encoder.TCanSparkEncoder;
 import com.torontocodingcollective.sensors.encoder.TEncoder;
 
 /**
@@ -225,6 +226,9 @@ public class TCanSpeedController extends TSpeedController {
             if (this.canCtreSpeedController instanceof TalonSRX) {
                 return new TCanEncoder((TalonSRX) canCtreSpeedController, getInverted());
             }
+        }
+        if (this.canSparkSpeedController != null) {
+            return new TCanSparkEncoder(canSparkSpeedController, getInverted());
         }
         return null;
     }
