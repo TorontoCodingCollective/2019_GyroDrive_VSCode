@@ -18,6 +18,19 @@ public class TLimitSwitch {
 
     public final DigitalInput limitSwitch;
 
+    /**
+     * Normally Open limit switch
+     * Construct a normally open limit switch
+     * <p>
+     * Since the DIO port has a pull up resistor, the value
+     * of the limit switch will be {@link DefaultState#TRUE}.
+     * 
+     * @param port dio port
+     */
+    public TLimitSwitch(int port) {
+    	this(port, DefaultState.TRUE);
+    }
+
     public TLimitSwitch(int port, DefaultState defaultState) {
 
         limitSwitch = new DigitalInput(port);

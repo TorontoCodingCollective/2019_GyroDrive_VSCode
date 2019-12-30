@@ -37,6 +37,7 @@ public class TCanSpeedController extends TSpeedController {
 
     private final BaseMotorController canCtreSpeedController;
     private final CANSparkMax         canSparkSpeedController;
+    private final CANSparkMax         canSparkFollowerSpeedController;
 
     private double                    speedSetpoint = 0;
 
@@ -94,15 +95,18 @@ public class TCanSpeedController extends TSpeedController {
             case SPARK_MAX_BRUSHLESS:
                 canSparkSpeedController = newSparkController(controllerType, canAddress);
                 canCtreSpeedController = null;
-                for (int followerCanAddress : followerCanAddresses) {
-                    CANSparkMax follower = newSparkController(controllerType, followerCanAddress);
-                    follower.follow(canSparkSpeedController);
+                if (followerCanAddresses.length > 0) {
+                	canSparkFollowerSpeedController = newSparkController(controllerType, followerCanAddresses[0]);
+                }
+                else {
+                	canSparkFollowerSpeedController = null;
                 }
                 break;
             case TALON_SRX:
             case VICTOR_SPX:
             default:
                 canSparkSpeedController = null;
+                canSparkFollowerSpeedController = null;
                 canCtreSpeedController = newCtreController(controllerType, canAddress);
                 for (int followerCanAddress : followerCanAddresses) {
                     BaseMotorController follower = newCtreController(controllerType, followerCanAddress);
@@ -170,12 +174,14 @@ public class TCanSpeedController extends TSpeedController {
             case SPARK_MAX_BRUSHED:
             case SPARK_MAX_BRUSHLESS:
                 canSparkSpeedController = newSparkController(controllerType, canAddress);
+                canSparkFollowerSpeedController = newSparkController(controllerType, followerCanAddress);
                 canCtreSpeedController = null;
                 break;
             case TALON_SRX:
             case VICTOR_SPX:
             default:
                 canSparkSpeedController = null;
+                canSparkFollowerSpeedController = null;
                 canCtreSpeedController = newCtreController(controllerType, canAddress);
                 break;
         }
@@ -184,9 +190,9 @@ public class TCanSpeedController extends TSpeedController {
             case SPARK_MAX_BRUSHED:
             case SPARK_MAX_BRUSHLESS:
                 CANSparkMax sparkFollower = newSparkController(followerControllerType, followerCanAddress);
-                if (canSparkSpeedController != null) {
-                    sparkFollower.follow(canSparkSpeedController);
-                }
+//                if (canSparkSpeedController != null) {
+//                    sparkFollower.follow(canSparkSpeedController);
+//                }
                 break;
         case TALON_SRX:
             case VICTOR_SPX:
@@ -289,6 +295,9 @@ public class TCanSpeedController extends TSpeedController {
         }
         else {
             canSparkSpeedController.set(speed);
+            if (canSparkFollowerSpeedController != null) {
+            	canSparkFollowerSpeedController.set(speed);
+            }
         }
     }
 

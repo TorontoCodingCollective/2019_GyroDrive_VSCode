@@ -37,6 +37,10 @@ public class TUltrasonicSensor {
         b2 = 40.0 - (m2 * v40);
     }
 
+    public double getRawVoltage() {
+    	return analogInput.getVoltage();
+    }
+    
     /***
      * Get the distance in inches from the back face of the Ultrasonic sensor
      * 
